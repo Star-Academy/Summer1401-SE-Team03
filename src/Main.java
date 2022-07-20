@@ -9,33 +9,33 @@ public class Main {
     static HashMap<String, ArrayList<Integer>> mapOfWords;
 
     public static void main(String[] args) {
-        readStopWords();
+        readAndSaveStopWords();
         readAllFilesAndSaveWords();
         handleInput();
     }
-// meow
-//[704, 706, 783, 784, 785]
 
-    // cat
-//[96, 244, 357, 366, 393, 614, 627, 664, 703, 704, 706, 722, 738, 783, 784, 785, 870, 880, 926, 944]
     private static void handleInput() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter the number of exercise: 1 or 2?");
         int input = sc.nextInt();
         if (input == 1)
-            handleNumber1();
+            exercise1();
         else if (input == 2)
-            handleNumber2();
+            exercise2();
     }
 
-    private static void handleNumber1() {
+    private static void exercise1() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter the word:");
         String word = sc.nextLine().toUpperCase().replaceAll("\\p{Punct}", "");
-        System.out.println(mapOfWords.get(word));
+        ArrayList<Integer> result = mapOfWords.get(word);
+        if (result == null)
+            System.out.println("No file found!");
+        else
+            System.out.println(result);
     }
 
-    private static void handleNumber2() {
+    private static void exercise2() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter a series of words:");
         String[] words = sc.nextLine().toUpperCase().split(" ");
@@ -44,61 +44,72 @@ public class Main {
         ArrayList<String> positives = new ArrayList<>();
         ArrayList<String> negatives = new ArrayList<>();
 
-        for (String word : words) { // Dividing words into 3 groups
+        initializeArrayLists(words, neutrals, positives, negatives); // Dividing words into 3 groups
+        System.out.println(findTheResult(neutrals, positives, negatives));
+    }
+
+    private static void initializeArrayLists(String[] words, ArrayList<String> neutrals, ArrayList<String> positives, ArrayList<String> negatives) {
+        for (String word : words) {
             if (word.startsWith("+"))
                 positives.add(word.replaceFirst("\\+", ""));
             else if (word.startsWith("-"))
                 negatives.add(word.replaceFirst("-", ""));
             else neutrals.add(word);
         }
-        System.out.println(findingTheResult(neutrals, positives, negatives));
     }
 
-    private static ArrayList<Integer> findingTheResult(ArrayList<String> neutrals, ArrayList<String> positives, ArrayList<String> negatives) {
-        ArrayList<Integer> result = new ArrayList<>();
-        boolean isFirstTime = true;
-        for (String neutral : neutrals) {
-            if (!mapOfWords.containsKey(neutral)) {
-                result.clear();
-                break;
-            } else {
-                if (isFirstTime) {
-                    result = mapOfWords.get(neutral);
-                    isFirstTime = false;
-                } else {
-                    result = getIntersectionOverArrayLists(result, mapOfWords.get(neutral));
-                    if (result.isEmpty())
-                        break;
-                }
-            }
-        }
-        // So far, we have found the intersection of neutrals!
-
-        ArrayList<Integer> unionOfPositives = new ArrayList<>();
-        ArrayList<Integer> unionOfNegatives = new ArrayList<>();
-        for (String positive : positives) { // finding the union of positives
-            if (mapOfWords.containsKey(positive)) {
-                unionOfPositives = getUnionOverArrayLists(unionOfPositives, mapOfWords.get(positive));
-            }
-        }
-        for (String negative : negatives) { // finding the union of negatives
-            if (mapOfWords.containsKey(negative)) {
-                unionOfNegatives = getUnionOverArrayLists(unionOfNegatives, mapOfWords.get(negative));
-            }
-        }
+    private static ArrayList<Integer> findTheResult(ArrayList<String> neutrals, ArrayList<String> positives, ArrayList<String> negatives) {
+        ArrayList<Integer> result;
+        ArrayList<Integer> intersectionOfNeutrals = findIntersection(neutrals);
+        ArrayList<Integer> unionOfPositives = findUnion(positives);
+        ArrayList<Integer> unionOfNegatives = findUnion(negatives);
 
         if (neutrals.isEmpty()) {
-            result = getSubtractionFromArrayLists(unionOfPositives, unionOfNegatives);
+            result = getArraysSub(unionOfPositives, unionOfNegatives);
         } else {
             if (!positives.isEmpty()) {
-                result = getIntersectionOverArrayLists(result, unionOfPositives);
+                result = getArraysCommonElements(intersectionOfNeutrals, unionOfPositives);
+                result = getArraysSub(result, unionOfNegatives);
+            } else {
+                result = getArraysSub(intersectionOfNeutrals, unionOfNegatives);
             }
-            result = getSubtractionFromArrayLists(result, unionOfNegatives);
         }
         return result;
     }
 
-    private static ArrayList<Integer> getIntersectionOverArrayLists(ArrayList<Integer> first, ArrayList<Integer> second) {
+    private static ArrayList<Integer> findUnion(ArrayList<String> arrayList) {
+        ArrayList<Integer> unionOfAll = new ArrayList<>();
+        for (String str : arrayList) {
+            if (mapOfWords.containsKey(str)) {
+                unionOfAll = getArraysUnion(unionOfAll, mapOfWords.get(str));
+            }
+        }
+        return unionOfAll;
+    }
+
+    private static ArrayList<Integer> findIntersection(ArrayList<String> neutrals) {
+        ArrayList<Integer> intersection = new ArrayList<>();
+        boolean isFirstTime = true;
+        for (String neutral : neutrals) {
+            if (!mapOfWords.containsKey(neutral)) {
+                intersection.clear();
+                break;
+            } else {
+                if (isFirstTime) {
+                    intersection.addAll(mapOfWords.get(neutral));
+                    isFirstTime = false;
+                } else {
+                    intersection = getArraysCommonElements(intersection, mapOfWords.get(neutral));
+                    if (intersection.isEmpty())
+                        break;
+                }
+            }
+        }
+        return intersection;
+    }
+
+    // This method returns the intersection of first and second. first = A, second = B. The method returns A n B
+    private static ArrayList<Integer> getArraysCommonElements(ArrayList<Integer> first, ArrayList<Integer> second) {
         ArrayList<Integer> result = new ArrayList<>();
         for (int fileNumber : first) {
             if (second.contains(fileNumber))
@@ -107,7 +118,8 @@ public class Main {
         return result;
     }
 
-    private static ArrayList<Integer> getUnionOverArrayLists(ArrayList<Integer> first, ArrayList<Integer> second) {
+    // This method returns the union of first and second. first = A, second = B. The method returns A u B
+    private static ArrayList<Integer> getArraysUnion(ArrayList<Integer> first, ArrayList<Integer> second) {
         ArrayList<Integer> result = new ArrayList<>(first);
         for (Integer fileNumber : second)
             if (!result.contains(fileNumber))
@@ -115,7 +127,8 @@ public class Main {
         return result;
     }
 
-    private static ArrayList<Integer> getSubtractionFromArrayLists(ArrayList<Integer> first, ArrayList<Integer> second) {
+    // This method subtracts the second set from the first one. first = A, second = B. The method returns A - B
+    private static ArrayList<Integer> getArraysSub(ArrayList<Integer> first, ArrayList<Integer> second) {
         ArrayList<Integer> result = new ArrayList<>();
         for (Integer fileNumber : first) {
             if (!second.contains(fileNumber))
@@ -124,6 +137,8 @@ public class Main {
         return result;
     }
 
+    // All files are in the "resources" folder. Their names are like: file (#fileNumber).
+    // This method reads the words in those files and saves them in a hashmap called mapOfWords.
     private static void readAllFilesAndSaveWords() {
         mapOfWords = new HashMap<>();
         for (int i = 1; i <= 1000; i++) {
@@ -131,16 +146,7 @@ public class Main {
                 Scanner sc = new Scanner(new FileReader("src/resources/file (" + i + ")"));
                 while (sc.hasNext()) {
                     String word = sc.next().toUpperCase().replaceAll("\\p{Punct}", "");
-                    if (mapOfWords.get(word) != null) {
-                        if (!mapOfWords.get(word).contains(i))
-                            mapOfWords.get(word).add(i);
-                    } else {
-                        if (!allStopWords.contains(word)) {
-                            ArrayList<Integer> temp = new ArrayList<>();
-                            temp.add(i);
-                            mapOfWords.put(word, temp);
-                        }
-                    }
+                    addWordToMapOfWords(word, i);
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -148,7 +154,22 @@ public class Main {
         }
     }
 
-    private static void readStopWords() {
+    private static void addWordToMapOfWords(String word, int fileNumber) {
+        if (mapOfWords.get(word) != null) {
+            if (!mapOfWords.get(word).contains(fileNumber))
+                mapOfWords.get(word).add(fileNumber);
+        } else {
+            if (!allStopWords.contains(word)) {
+                ArrayList<Integer> temp = new ArrayList<>();
+                temp.add(fileNumber);
+                mapOfWords.put(word, temp);
+            }
+        }
+    }
+
+    // All the stop words are in the file "stop_words_english.txt".
+    // This method reads them and saves them in an arraylist called allStopWords.
+    private static void readAndSaveStopWords() {
         allStopWords = new ArrayList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader("src/stop words/stop_words_english.txt"));
