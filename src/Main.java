@@ -11,7 +11,6 @@ public class Main {
     public static void main(String[] args) {
         readStopWords();
         readAllFilesAndSaveWords();
-//        Collections.sort(mapOfWords);
         handleInput();
     }
 
@@ -21,92 +20,65 @@ public class Main {
         int input = sc.nextInt();
         if (input == 1)
             handleNumber1();
-//        else if (input == 2)
-//            handleNumber2();
+        else if (input == 2)
+            handle_inout2();
     }
 
     private static void handleNumber1() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter the word:");
         String word = sc.nextLine().toUpperCase().replaceAll("\\p{Punct}", "");
-        System.out.println(mapOfWords.get(word));
+        if (mapOfWords.get(word) != null) {
+            System.out.println(mapOfWords.get(word));
+        } else {
+            System.out.println("No file found");
+        }
     }
 
-//    private static void handleNumber2() {
-//        Scanner sc = new Scanner(System.in);
-//        System.out.println("Please enter a series of words:");
-//        String[] words = sc.nextLine().toLowerCase().split(" ");
-//
-//        ArrayList<String> neutrals = new ArrayList<>();
-//        ArrayList<String> positives = new ArrayList<>();
-//        ArrayList<String> negatives = new ArrayList<>();
-//
-//        for (String word : words) { // Dividing words into 3 groups
-//            if (word.startsWith("+"))
-//                positives.add(word.replaceFirst("\\+", ""));
-//            else if (word.startsWith("-"))
-//                negatives.add(word.replaceFirst("-", ""));
-//            else neutrals.add(word);
-//        }
-////        System.out.println("positives are: "+ positives);
-////        System.out.println("negatives are: "+ negatives);
-////        System.out.println("neutrals are: "+ neutrals);
-//
-//        System.out.println(findingTheResult(neutrals, positives, negatives));
-//    }
-//
-//    private static ArrayList<Integer> findingTheResult(ArrayList<String> neutrals, ArrayList<String> positives, ArrayList<String> negatives) {
-//        ArrayList<Integer> result = new ArrayList<>();
-//        for (String neutral : neutrals) {
-//            if (mapOfWords.get(neutral) == null) {
-//                result.clear();
-//                break;
-//            } else {
-//                intersectionOverArrayLists(result, mapOfWords.get(neutral));
-//                if (result.isEmpty())
-//                    break;
-//            }
-//        } // So far, we have found the intersection of neutrals!
-//
-//        if (!result.isEmpty()) {
-//            ArrayList<Integer> unionOfPositives = new ArrayList<>();
-//            ArrayList<Integer> unionOfNegatives = new ArrayList<>();
-//            for (String positive : positives) { // finding the union of positives
-//                if (mapOfWords.get(positive) != null) {
-//                    unionOverArrayLists(unionOfPositives, mapOfWords.get(positive));
-//                }
-//            }
-//            for (String negative : negatives) { // finding the union of negatives
-//                if (mapOfWords.get(negative) != null) {
-//                    unionOverArrayLists(unionOfNegatives, mapOfWords.get(negative));
-//                }
-//            }
-//            intersectionOverArrayLists(result, unionOfPositives);
-//            subtractionFromArrayLists(result, unionOfNegatives);
-//        }
-//        return result;
-//    }
+    private static ArrayList<Integer> handleNumber2(String word) {
+        return mapOfWords.get(word);
+    }
 
-//    private static void intersectionOverArrayLists(ArrayList<Integer> result, ArrayList<Integer> addee) {
-//        for (int fileNumber : result) {
-//            if (!addee.contains(fileNumber))
-//                result.remove(fileNumber);
-//        }
-//    }
-//
-//    private static void unionOverArrayLists(ArrayList<Integer> result, ArrayList<Integer> addee) {
-//        for (int fileNumber : addee) {
-//            if (!result.contains(fileNumber))
-//                result.add(fileNumber);
-//        }
-//    }
+    private static void handle_inout2() {
+        String new_w = "";
+        String new_w_2 = "";
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Please enter a series of words:");
+        String[] words = sc.nextLine().toUpperCase().split(" ");
+        for (String w : words) {
+            if (w.startsWith("-")) {
+                new_w = w.replace("-", "");
+            } else if (w.startsWith("+")) {
+                new_w = w.replace("+", "");
+            } else {
+                new_w_2 = w;
+                if (!result.contains(handleNumber2(new_w_2))) {
+                    result.add(handleNumber2(new_w_2));
+                    continue;
+                }
+            }
+            if (!w.startsWith("-") && handleNumber2(new_w) != null && !result.contains(handleNumber2(new_w))) {
+                result.add(handleNumber2(new_w));
 
-//    private static void subtractionFromArrayLists(ArrayList<Integer> result, ArrayList<Integer> removee) {
-//        for (int fileNumber : removee) {
-//            if (result.contains(fileNumber))
-//                result.remove(fileNumber);
-//        }
-//    }
+            }
+        }
+        for (String w : words) {
+            if (w.startsWith("-")) {
+                new_w = w.replace("-", "");
+                result.remove(handleNumber2(new_w));
+            }
+        }
+        if (result.size() == 0) {
+            System.out.println("No file found");
+        } else {
+            if (!new_w_2.equals("") && !result.contains(handleNumber2(new_w_2))) {
+                result.remove(handleNumber2(new_w));
+            } else {
+                System.out.println(result);
+            }
+        }
+    }
 
     private static void readAllFilesAndSaveWords() {
         mapOfWords = new HashMap<>();
@@ -138,7 +110,7 @@ public class Main {
             BufferedReader br = new BufferedReader(new FileReader("src/stop words/stop_words_english.txt"));
             String word;
             while ((word = br.readLine()) != null) {
-                allStopWords.add(word.toUpperCase().replaceAll("\\p{Punct}",""));
+                allStopWords.add(word.toUpperCase().replaceAll("\\p{Punct}", ""));
             }
         } catch (IOException e) {
             e.printStackTrace();
