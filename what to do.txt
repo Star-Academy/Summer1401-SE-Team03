@@ -1,3 +1,0 @@
-step 1:
-    reading all stop words from their file
-step 2:
