@@ -13,7 +13,11 @@ public class Main {
         readAllFilesAndSaveWords();
         handleInput();
     }
+// meow
+//[704, 706, 783, 784, 785]
 
+    // cat
+//[96, 244, 357, 366, 393, 614, 627, 664, 703, 704, 706, 722, 738, 783, 784, 785, 870, 880, 926, 944]
     private static void handleInput() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter the number of exercise: 1 or 2?");
@@ -21,63 +25,103 @@ public class Main {
         if (input == 1)
             handleNumber1();
         else if (input == 2)
-            handle_inout2();
+            handleNumber2();
     }
 
     private static void handleNumber1() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter the word:");
         String word = sc.nextLine().toUpperCase().replaceAll("\\p{Punct}", "");
-        if (mapOfWords.get(word) != null) {
-            System.out.println(mapOfWords.get(word));
-        } else {
-            System.out.println("No file found");
-        }
+        System.out.println(mapOfWords.get(word));
     }
 
-    private static ArrayList<Integer> handleNumber2(String word) {
-        return mapOfWords.get(word);
-    }
-
-    private static void handle_inout2() {
-        String new_w = "";
-        String new_w_2 = "";
-        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+    private static void handleNumber2() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please enter a series of words:");
         String[] words = sc.nextLine().toUpperCase().split(" ");
-        for (String w : words) {
-            if (w.startsWith("-")) {
-                new_w = w.replace("-", "");
-            } else if (w.startsWith("+")) {
-                new_w = w.replace("+", "");
+
+        ArrayList<String> neutrals = new ArrayList<>();
+        ArrayList<String> positives = new ArrayList<>();
+        ArrayList<String> negatives = new ArrayList<>();
+
+        for (String word : words) { // Dividing words into 3 groups
+            if (word.startsWith("+"))
+                positives.add(word.replaceFirst("\\+", ""));
+            else if (word.startsWith("-"))
+                negatives.add(word.replaceFirst("-", ""));
+            else neutrals.add(word);
+        }
+        System.out.println(findingTheResult(neutrals, positives, negatives));
+    }
+
+    private static ArrayList<Integer> findingTheResult(ArrayList<String> neutrals, ArrayList<String> positives, ArrayList<String> negatives) {
+        ArrayList<Integer> result = new ArrayList<>();
+        boolean isFirstTime = true;
+        for (String neutral : neutrals) {
+            if (!mapOfWords.containsKey(neutral)) {
+                result.clear();
+                break;
             } else {
-                new_w_2 = w;
-                if (!result.contains(handleNumber2(new_w_2))) {
-                    result.add(handleNumber2(new_w_2));
-                    continue;
+                if (isFirstTime) {
+                    result = mapOfWords.get(neutral);
+                    isFirstTime = false;
+                } else {
+                    result = getIntersectionOverArrayLists(result, mapOfWords.get(neutral));
+                    if (result.isEmpty())
+                        break;
                 }
             }
-            if (!w.startsWith("-") && handleNumber2(new_w) != null && !result.contains(handleNumber2(new_w))) {
-                result.add(handleNumber2(new_w));
+        }
+        // So far, we have found the intersection of neutrals!
 
+        ArrayList<Integer> unionOfPositives = new ArrayList<>();
+        ArrayList<Integer> unionOfNegatives = new ArrayList<>();
+        for (String positive : positives) { // finding the union of positives
+            if (mapOfWords.containsKey(positive)) {
+                unionOfPositives = getUnionOverArrayLists(unionOfPositives, mapOfWords.get(positive));
             }
         }
-        for (String w : words) {
-            if (w.startsWith("-")) {
-                new_w = w.replace("-", "");
-                result.remove(handleNumber2(new_w));
+        for (String negative : negatives) { // finding the union of negatives
+            if (mapOfWords.containsKey(negative)) {
+                unionOfNegatives = getUnionOverArrayLists(unionOfNegatives, mapOfWords.get(negative));
             }
         }
-        if (result.size() == 0) {
-            System.out.println("No file found");
+
+        if (neutrals.isEmpty()) {
+            result = getSubtractionFromArrayLists(unionOfPositives, unionOfNegatives);
         } else {
-            if (!new_w_2.equals("") && !result.contains(handleNumber2(new_w_2))) {
-                result.remove(handleNumber2(new_w));
-            } else {
-                System.out.println(result);
+            if (!positives.isEmpty()) {
+                result = getIntersectionOverArrayLists(result, unionOfPositives);
             }
+            result = getSubtractionFromArrayLists(result, unionOfNegatives);
         }
+        return result;
+    }
+
+    private static ArrayList<Integer> getIntersectionOverArrayLists(ArrayList<Integer> first, ArrayList<Integer> second) {
+        ArrayList<Integer> result = new ArrayList<>();
+        for (int fileNumber : first) {
+            if (second.contains(fileNumber))
+                result.add(fileNumber);
+        }
+        return result;
+    }
+
+    private static ArrayList<Integer> getUnionOverArrayLists(ArrayList<Integer> first, ArrayList<Integer> second) {
+        ArrayList<Integer> result = new ArrayList<>(first);
+        for (Integer fileNumber : second)
+            if (!result.contains(fileNumber))
+                result.add(fileNumber);
+        return result;
+    }
+
+    private static ArrayList<Integer> getSubtractionFromArrayLists(ArrayList<Integer> first, ArrayList<Integer> second) {
+        ArrayList<Integer> result = new ArrayList<>();
+        for (Integer fileNumber : first) {
+            if (!second.contains(fileNumber))
+                result.add(fileNumber);
+        }
+        return result;
     }
 
     private static void readAllFilesAndSaveWords() {
