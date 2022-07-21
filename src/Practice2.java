@@ -26,12 +26,10 @@ public class Practice2 {
     private static ArrayList<Integer> findTheResult(ArrayList<String> neutrals, ArrayList<String> positives, ArrayList<String> negatives) {
         if (neutrals.isEmpty())
             return getArraysSub(findUnion(positives), findUnion(negatives));
-        else {
-            if (!positives.isEmpty())
-                return getArraysSub(getArraysCommonElements(findIntersection(neutrals), findUnion(positives)), findUnion(negatives));
-            else
-                return getArraysSub(findIntersection(neutrals), findUnion(negatives));
-        }
+        else if (!positives.isEmpty())
+            return getArraysSub(getArraysCommonElements(findIntersection(neutrals), findUnion(positives)), findUnion(negatives));
+        else
+            return getArraysSub(findIntersection(neutrals), findUnion(negatives));
     }
 
     private static ArrayList<Integer> findUnion(ArrayList<String> arrayList) {
@@ -64,11 +62,8 @@ public class Practice2 {
     }
 
     private static ArrayList<Integer> getArraysCommonElements(ArrayList<Integer> first, ArrayList<Integer> second) {
-        ArrayList<Integer> result = new ArrayList<>();
-        for (int fileNumber : first) {
-            if (second.contains(fileNumber))
-                result.add(fileNumber);
-        }
+        ArrayList<Integer> result = (ArrayList<Integer>) first.clone();
+        result.retainAll(second);
         return result;
     }
 
@@ -81,12 +76,8 @@ public class Practice2 {
     }
 
     private static ArrayList<Integer> getArraysSub(ArrayList<Integer> first, ArrayList<Integer> second) {
-        ArrayList<Integer> result = new ArrayList<>();
-        for (Integer fileNumber : first) {
-            if (!second.contains(fileNumber))
-                result.add(fileNumber);
-        }
+        ArrayList<Integer> result = (ArrayList<Integer>) first.clone();
+        result.removeAll(second);
         return result;
     }
-
 }
