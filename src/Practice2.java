@@ -33,7 +33,6 @@ public class Practice2 {
                 return getArraysSub(findIntersection(neutrals), findUnion(negatives));
         }
     }
-//+valid peter +fight -thnewsgroup
 
     private static ArrayList<Integer> findUnion(ArrayList<String> arrayList) {
         ArrayList<Integer> unionOfAll = new ArrayList<>();
@@ -45,7 +44,7 @@ public class Practice2 {
         return unionOfAll;
     }
 
-    private static ArrayList<Integer> findIntersection(ArrayList<String> neutrals) {
+    private static ArrayList<Integer> findIntersection(ArrayList<String> neutrals) {//*
         ArrayList<Integer> intersection = new ArrayList<>();
 
         if (Main.mapOfWords.containsKey(neutrals.get(0)))
