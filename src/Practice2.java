@@ -24,23 +24,16 @@ public class Practice2 {
     }
 
     private static ArrayList<Integer> findTheResult(ArrayList<String> neutrals, ArrayList<String> positives, ArrayList<String> negatives) {
-        ArrayList<Integer> result;
-        ArrayList<Integer> intersectionOfNeutrals = findIntersection(neutrals);
-        ArrayList<Integer> unionOfPositives = findUnion(positives);
-        ArrayList<Integer> unionOfNegatives = findUnion(negatives);
-
-        if (neutrals.isEmpty()) {
-            result = getArraysSub(unionOfPositives, unionOfNegatives);
-        } else {
-            if (!positives.isEmpty()) {
-                result = getArraysCommonElements(intersectionOfNeutrals, unionOfPositives);
-                result = getArraysSub(result, unionOfNegatives);
-            } else {
-                result = getArraysSub(intersectionOfNeutrals, unionOfNegatives);
-            }
+        if (neutrals.isEmpty())
+            return getArraysSub(findUnion(positives), findUnion(negatives));
+        else {
+            if (!positives.isEmpty())
+                return getArraysSub(getArraysCommonElements(findIntersection(neutrals), findUnion(positives)), findUnion(negatives));
+            else
+                return getArraysSub(findIntersection(neutrals), findUnion(negatives));
         }
-        return result;
     }
+//+valid peter +fight -thnewsgroup
 
     private static ArrayList<Integer> findUnion(ArrayList<String> arrayList) {
         ArrayList<Integer> unionOfAll = new ArrayList<>();
@@ -54,20 +47,18 @@ public class Practice2 {
 
     private static ArrayList<Integer> findIntersection(ArrayList<String> neutrals) {
         ArrayList<Integer> intersection = new ArrayList<>();
-        boolean isFirstTime = true;
+
+        if (Main.mapOfWords.containsKey(neutrals.get(0)))
+            intersection.addAll(Main.mapOfWords.get(neutrals.get(0)));
+
         for (String neutral : neutrals) {
             if (!Main.mapOfWords.containsKey(neutral)) {
                 intersection.clear();
                 break;
             } else {
-                if (isFirstTime) {
-                    intersection.addAll(Main.mapOfWords.get(neutral));
-                    isFirstTime = false;
-                } else {
-                    intersection = getArraysCommonElements(intersection, Main.mapOfWords.get(neutral));
-                    if (intersection.isEmpty())
-                        break;
-                }
+                intersection = getArraysCommonElements(intersection, Main.mapOfWords.get(neutral));
+                if (intersection.isEmpty())
+                    break;
             }
         }
         return intersection;
