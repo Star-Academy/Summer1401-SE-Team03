@@ -172,7 +172,7 @@ public class Main {
     private static void readAndSaveStopWords() {
         allStopWords = new ArrayList<>();
         try {
-            BufferedReader br = new BufferedReader(new FileReader("src/stop words/stop_words_english.txt"));
+            BufferedReader br = new BufferedReader(new FileReader("src/stop_words_english.txt"));
             String word;
             while ((word = br.readLine()) != null) {
                 allStopWords.add(word.toUpperCase().replaceAll("\\p{Punct}", ""));
