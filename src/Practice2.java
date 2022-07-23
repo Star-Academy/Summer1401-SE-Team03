@@ -10,7 +10,9 @@ public class Practice2 {
         ArrayList<String> negatives = new ArrayList<>();
 
         initializeArrayLists(words, neutrals, positives, negatives); // Dividing words into 3 groups
-        System.out.println(findTheResult(neutrals, positives, negatives));
+        if (findTheResult(neutrals, positives, negatives).isEmpty())
+            System.out.println("No file found!");
+        else System.out.println(findTheResult(neutrals, positives, negatives));
     }
 
     private static void initializeArrayLists(String[] words, ArrayList<String> neutrals, ArrayList<String> positives, ArrayList<String> negatives) {
@@ -61,11 +63,8 @@ public class Practice2 {
     }
 
     private static ArrayList<Integer> getArraysCommonElements(ArrayList<Integer> first, ArrayList<Integer> second) {
-        ArrayList<Integer> result = new ArrayList<>();
-        for (int fileNumber : first) {
-            if (second.contains(fileNumber))
-                result.add(fileNumber);
-        }
+        ArrayList<Integer> result = new ArrayList<>(first);
+        result.retainAll(second);
         return result;
     }
 
@@ -78,11 +77,8 @@ public class Practice2 {
     }
 
     private static ArrayList<Integer> getArraysSub(ArrayList<Integer> first, ArrayList<Integer> second) {
-        ArrayList<Integer> result = new ArrayList<>();
-        for (Integer fileNumber : first) {
-            if (!second.contains(fileNumber))
-                result.add(fileNumber);
-        }
+        ArrayList<Integer> result = new ArrayList<>(first);
+        result.removeAll(second);
         return result;
     }
 }

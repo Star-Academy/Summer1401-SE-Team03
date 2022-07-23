@@ -9,9 +9,13 @@ public class Main {
     static HashMap<String, ArrayList<Integer>> mapOfWords;
     static Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) throws Exception {
-        readAndSaveStopWords();
-        readAllFilesAndSaveWords();
+    public static void main(String[] args){//*
+        try {
+            readAndSaveStopWords();
+            readAllFilesAndSaveWords();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         handleInput();
     }
 
