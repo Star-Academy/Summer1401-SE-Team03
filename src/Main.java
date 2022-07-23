@@ -25,13 +25,13 @@ public class Main {
         }
     }
 
-    private static void readAndSaveStopWords() throws Exception {
+    private static void readAndSaveStopWords() throws IOException {
         allStopWords = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader("src/stop_words_english.txt"));
         br.lines().forEach(stopWord -> allStopWords.add(stopWord.toUpperCase().replaceAll("\\p{Punct}", "")));
     }
 
-    private static void readAllFilesAndSaveWords() throws Exception {
+    private static void readAllFilesAndSaveWords() throws FileNotFoundException {
         mapOfWords = new HashMap<>();
         String wordOfFile;
         Scanner sc;
