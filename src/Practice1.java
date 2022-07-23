@@ -5,9 +5,9 @@ public class Practice1 {
         System.out.println("Please enter the word:");
         String wordInput = Main.sc.nextLine().toUpperCase().replaceAll("\\p{Punct}", "");
         ArrayList<Integer> result = Main.mapOfWords.get(wordInput);
-        if (result == null) {
+        if (result == null)
             System.out.println("No file found!");
-        } else
+        else
             System.out.println(result);
     }
 }

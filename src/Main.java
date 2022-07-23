@@ -9,7 +9,7 @@ public class Main {
     static HashMap<String, ArrayList<Integer>> mapOfWords;
     static Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         readAndSaveStopWords();
         readAllFilesAndSaveWords();
         handleInput();
@@ -25,42 +25,33 @@ public class Main {
         }
     }
 
-    private static void readAndSaveStopWords() {
+    private static void readAndSaveStopWords() throws Exception {
         allStopWords = new ArrayList<>();
-        try {
-            BufferedReader br = new BufferedReader(new FileReader("src/stop_words_english.txt"));
-            br.lines().forEach(stopWord -> allStopWords.add(stopWord.toUpperCase().replaceAll("\\p{Punct}", "")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        BufferedReader br = new BufferedReader(new FileReader("src/stop_words_english.txt"));
+        br.lines().forEach(stopWord -> allStopWords.add(stopWord.toUpperCase().replaceAll("\\p{Punct}", "")));
     }
 
-    private static void readAllFilesAndSaveWords() {
+    private static void readAllFilesAndSaveWords() throws Exception {
         mapOfWords = new HashMap<>();
         String wordOfFile;
         Scanner sc;
         for (int i = 1; i <= 1000; i++) {
-            try {
-                sc = new Scanner(new FileReader("src/resources/file (" + i + ")"));
-                while (sc.hasNext()) {
-                    wordOfFile = sc.next().toUpperCase().replaceAll("\\p{Punct}", "");
-                    addWordToMapOfWords(wordOfFile, i);//*
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            sc = new Scanner(new FileReader("src/resources/file (" + i + ")"));
+            while (sc.hasNext()) {
+                wordOfFile = sc.next().toUpperCase().replaceAll("\\p{Punct}", "");
+                addWordToMapOfWords(wordOfFile, i);//*
             }
         }
     }
 
     private static void addWordToMapOfWords(String wordOfFile, int fileNumber) {
-       if (mapOfWords.containsKey(wordOfFile) ) {//*
+        if (mapOfWords.containsKey(wordOfFile)) {//*
             if (!mapOfWords.get(wordOfFile).contains(fileNumber))
                 mapOfWords.get(wordOfFile).add(fileNumber);
+        } else if (!allStopWords.contains(wordOfFile)) {
+            ArrayList<Integer> fileNumbersList = new ArrayList<>();
+            fileNumbersList.add(fileNumber);
+            mapOfWords.put(wordOfFile, fileNumbersList);
         }
-        else if (!allStopWords.contains(wordOfFile)) {
-                ArrayList<Integer> fileNumbersList = new ArrayList<>();
-                fileNumbersList.add(fileNumber);
-                mapOfWords.put(wordOfFile, fileNumbersList);
-            }
     }
 }

@@ -35,9 +35,8 @@ public class Practice2 {
     private static ArrayList<Integer> findUnion(ArrayList<String> arrayList) {
         ArrayList<Integer> unionOfAll = new ArrayList<>();
         for (String str : arrayList) {
-            if (Main.mapOfWords.containsKey(str)) {
+            if (Main.mapOfWords.containsKey(str))
                 unionOfAll = getArraysUnion(unionOfAll, Main.mapOfWords.get(str));
-            }
         }
         return unionOfAll;
     }
@@ -62,8 +61,11 @@ public class Practice2 {
     }
 
     private static ArrayList<Integer> getArraysCommonElements(ArrayList<Integer> first, ArrayList<Integer> second) {
-        ArrayList<Integer> result = (ArrayList<Integer>) first.clone();
-        result.retainAll(second);
+        ArrayList<Integer> result = new ArrayList<>();
+        for (int fileNumber : first) {
+            if (second.contains(fileNumber))
+                result.add(fileNumber);
+        }
         return result;
     }
 
@@ -76,8 +78,11 @@ public class Practice2 {
     }
 
     private static ArrayList<Integer> getArraysSub(ArrayList<Integer> first, ArrayList<Integer> second) {
-        ArrayList<Integer> result = (ArrayList<Integer>) first.clone();
-        result.removeAll(second);
+        ArrayList<Integer> result = new ArrayList<>();
+        for (Integer fileNumber : first) {
+            if (!second.contains(fileNumber))
+                result.add(fileNumber);
+        }
         return result;
     }
 }
