@@ -9,7 +9,7 @@ public class Main {
     static HashMap<String, ArrayList<Integer>> mapOfWords;
     static Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args){//*
+    public static void main(String[] args) {
         try {
             readAndSaveStopWords();
             readAllFilesAndSaveWords();
@@ -49,7 +49,7 @@ public class Main {
     }
 
     private static void addWordToMapOfWords(String wordOfFile, int fileNumber) {
-        if (mapOfWords.containsKey(wordOfFile)) {//*
+        if (mapOfWords.containsKey(wordOfFile)) {
             if (!mapOfWords.get(wordOfFile).contains(fileNumber))
                 mapOfWords.get(wordOfFile).add(fileNumber);
         } else if (!allStopWords.contains(wordOfFile)) {

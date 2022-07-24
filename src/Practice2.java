@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Practice2 {
     public static void starter() {
         System.out.println("Please enter a series of words:");
+
         String[] words = Main.sc.nextLine().toUpperCase().split(" ");
 
         ArrayList<String> neutrals = new ArrayList<>();
