@@ -1,22 +1,22 @@
 import java.util.ArrayList;
-
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 public class Practice2 {
+    private static Set<Integer> result;
     public static void starter() {
         System.out.println("Please enter a series of words:");
-
         String[] words = Main.sc.nextLine().toUpperCase().split(" ");
-
-        ArrayList<String> neutrals = new ArrayList<>();
-        ArrayList<String> positives = new ArrayList<>();
-        ArrayList<String> negatives = new ArrayList<>();
-
-        initializeArrayLists(words, neutrals, positives, negatives); // Dividing words into 3 groups
+        Set<String> neutrals = new HashSet<>();
+        Set<String> positives = new HashSet<>();
+        Set<String> negatives = new HashSet<>();
+        initializeSets(words, neutrals, positives, negatives); // Dividing words into 3 groups
         if (findTheResult(neutrals, positives, negatives).isEmpty())
             System.out.println("No file found!");
         else System.out.println(findTheResult(neutrals, positives, negatives));
     }
 
-    private static void initializeArrayLists(String[] words, ArrayList<String> neutrals, ArrayList<String> positives, ArrayList<String> negatives) {
+    private static void initializeSets(String[] words, Set<String> neutrals, Set<String> positives, Set<String> negatives) {
         for (String word : words) {
             if (word.startsWith("+"))
                 positives.add(word.replaceFirst("\\+", ""));
@@ -26,7 +26,7 @@ public class Practice2 {
         }
     }
 
-    private static ArrayList<Integer> findTheResult(ArrayList<String> neutrals, ArrayList<String> positives, ArrayList<String> negatives) {
+    private static Set<Integer> findTheResult(Set<String> neutrals, Set<String> positives, Set<String> negatives) {
         if (neutrals.isEmpty())
             return getArraysSub(findUnion(positives), findUnion(negatives));
         else if (!positives.isEmpty())
@@ -35,27 +35,26 @@ public class Practice2 {
             return getArraysSub(findIntersection(neutrals), findUnion(negatives));
     }
 
-    private static ArrayList<Integer> findUnion(ArrayList<String> arrayList) {
-        ArrayList<Integer> unionOfAll = new ArrayList<>();
+    private static Set<Integer> findUnion(Set<String> arrayList) {
+        Set<Integer> unionOfAll = new HashSet<>();
         for (String str : arrayList) {
             if (Main.mapOfWords.containsKey(str))
-                unionOfAll = getArraysUnion(unionOfAll, Main.mapOfWords.get(str));
+                unionOfAll.addAll(Main.mapOfWords.get(str));
         }
         return unionOfAll;
     }
 
-    private static ArrayList<Integer> findIntersection(ArrayList<String> neutrals) {//*
-        ArrayList<Integer> intersection = new ArrayList<>();
-
-        if (Main.mapOfWords.containsKey(neutrals.get(0)))
-            intersection.addAll(Main.mapOfWords.get(neutrals.get(0)));
-
+    private static Set<Integer> findIntersection(Set<String> neutrals) {//*
+        Set<Integer> intersection = new HashSet<>();
+        List<String> stringsList = new ArrayList<>(neutrals);
+        if (Main.mapOfWords.containsKey(stringsList.get(0)))
+            intersection.addAll(Main.mapOfWords.get(stringsList.get(0)));
         for (String neutral : neutrals) {
             if (!Main.mapOfWords.containsKey(neutral)) {
                 intersection.clear();
                 break;
             } else {
-                intersection = getArraysCommonElements(intersection, Main.mapOfWords.get(neutral));
+                intersection.retainAll(Main.mapOfWords.get(neutral));
                 if (intersection.isEmpty())
                     break;
             }
@@ -63,22 +62,14 @@ public class Practice2 {
         return intersection;
     }
 
-    private static ArrayList<Integer> getArraysCommonElements(ArrayList<Integer> first, ArrayList<Integer> second) {
-        ArrayList<Integer> result = new ArrayList<>(first);
+    private static Set<Integer> getArraysCommonElements(Set<Integer> first, Set<Integer> second) {
+        Set<Integer> result = new HashSet<>(first);
         result.retainAll(second);
         return result;
     }
 
-    private static ArrayList<Integer> getArraysUnion(ArrayList<Integer> first, ArrayList<Integer> second) {
-        ArrayList<Integer> result = new ArrayList<>(first);
-        for (Integer fileNumber : second)
-            if (!result.contains(fileNumber))
-                result.add(fileNumber);
-        return result;
-    }
-
-    private static ArrayList<Integer> getArraysSub(ArrayList<Integer> first, ArrayList<Integer> second) {
-        ArrayList<Integer> result = new ArrayList<>(first);
+    private static Set<Integer> getArraysSub(Set<Integer> first, Set<Integer> second) {
+        Set<Integer> result = new HashSet<>(first);
         result.removeAll(second);
         return result;
     }
