@@ -3,10 +3,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 public class Practice2 {
-    private static Set<Integer> result;
     public static void starter() {
         System.out.println("Please enter a series of words:");
-        String[] words = Main.sc.nextLine().toUpperCase().split(" ");
+        String[] words = ProgramController.sc.nextLine().toUpperCase().split(" ");
         Set<String> neutrals = new HashSet<>();
         Set<String> positives = new HashSet<>();
         Set<String> negatives = new HashSet<>();
@@ -38,8 +37,8 @@ public class Practice2 {
     private static Set<Integer> findUnion(Set<String> arrayList) {
         Set<Integer> unionOfAll = new HashSet<>();
         for (String str : arrayList) {
-            if (Main.mapOfWords.containsKey(str))
-                unionOfAll.addAll(Main.mapOfWords.get(str));
+            if (ProgramController.mapOfWords.containsKey(str))
+                unionOfAll.addAll(ProgramController.mapOfWords.get(str));
         }
         return unionOfAll;
     }
@@ -47,14 +46,14 @@ public class Practice2 {
     private static Set<Integer> findIntersection(Set<String> neutrals) {//*
         Set<Integer> intersection = new HashSet<>();
         List<String> stringsList = new ArrayList<>(neutrals);
-        if (Main.mapOfWords.containsKey(stringsList.get(0)))
-            intersection.addAll(Main.mapOfWords.get(stringsList.get(0)));
+        if (ProgramController.mapOfWords.containsKey(stringsList.get(0)))
+            intersection.addAll(ProgramController.mapOfWords.get(stringsList.get(0)));
         for (String neutral : neutrals) {
-            if (!Main.mapOfWords.containsKey(neutral)) {
+            if (!ProgramController.mapOfWords.containsKey(neutral)) {
                 intersection.clear();
                 break;
             } else {
-                intersection.retainAll(Main.mapOfWords.get(neutral));
+                intersection.retainAll(ProgramController.mapOfWords.get(neutral));
                 if (intersection.isEmpty())
                     break;
             }
