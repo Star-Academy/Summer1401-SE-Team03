@@ -1,6 +1,7 @@
 ﻿
 using Newtonsoft.Json;
 using System.Linq;
+
 class Program
 {
     static void Main()
@@ -17,7 +18,7 @@ class Program
             List<Grade> grades = JsonConvert.DeserializeObject<List<Grade>>(json);
             int i = 0;
             var sortedScores = grades.OrderByDescending(g => g.Score);
-            foreach (var rs in result)
+            foreach (var rs in sortedScores)
             {
                 i = i + 1;
                 Console.WriteLine($"The sorted score {i} is: {rs.Score} ");
