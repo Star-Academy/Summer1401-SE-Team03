@@ -26,8 +26,8 @@ public class ProgramController {
         System.out.println("Please enter the number of exercise: 1 or 2?");
         String input = sc.nextLine();
         switch (input) {
-            case "1" -> Practice1.starter();
-            case "2" -> Practice2.starter();
+            case "1" -> SimpleInvertedIndex.starter();
+            case "2" -> AdvancedInvertedIndex.starter();
             default -> System.out.println("wrong input!");
         }
     }

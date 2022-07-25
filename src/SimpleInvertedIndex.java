@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-public class Practice1 {
+public class SimpleInvertedIndex {
     public static void starter() {
         System.out.println("Please enter the word:");
         String wordInput = ProgramController.sc.nextLine().toUpperCase().replaceAll("\\p{Punct}", "");

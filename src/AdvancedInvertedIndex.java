@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-public class Practice2 {
+public class AdvancedInvertedIndex {
     public static void starter() {
         System.out.println("Please enter a series of words:");
         String[] words = ProgramController.sc.nextLine().toUpperCase().split(" ");
