@@ -1,41 +1,31 @@
 ﻿
-using Newtonsoft.Json;
-using System.Linq;
-
+using Newtonsoft.Json; //nameSpace
 class Program
 {
+    private static List<StudentData> students;
+    private static List<StudentGrade> grades;
     static void Main()
     {
-        using (StreamReader r = new StreamReader("data/students.json"))
+        HandlingInput();
+        makeAverageScores();
+    }
+    private static void HandlingInput()//one input
+    {
+        using (StreamReader studentFileReader = new StreamReader("data/students.json"))
+        using (StreamReader gradeFileReader = new StreamReader("data/grades.json"))
         {
-            string json = r.ReadToEnd();
-            List<Student> students = JsonConvert.DeserializeObject<List<Student>>(json);
-        }
+            string studentJson = studentFileReader.ReadToEnd();
+            students = JsonConvert.DeserializeObject<List<StudentData>>(studentJson);
 
-        using (StreamReader r = new StreamReader("data/grades.json"))
-        {
-            string json = r.ReadToEnd();
-            List<Grade> grades = JsonConvert.DeserializeObject<List<Grade>>(json);
-            int i = 0;
-            var sortedScores = grades.OrderByDescending(g => g.Score);
-            foreach (var rs in sortedScores)
-            {
-                i = i + 1;
-                Console.WriteLine($"The sorted score {i} is: {rs.Score} ");
-            }
-
+            string gradeJson = gradeFileReader.ReadToEnd();
+            grades = JsonConvert.DeserializeObject<List<StudentGrade>>(gradeJson);
         }
     }
-}
-public class Student
-{
-    public int StudentNumber { get; set; }
-    public string FirstName { get; set; }
-    public string Lastname { get; set; }
-}
-public class Grade
-{
-    public int StudentNumber { get; set; }
-    public string Lesson { get; set; }
-    public string Score { get; set; }
+    private static void makeAverageScores()
+    {
+        students.ForEach(student => student.Average = grades.Where(
+            o => o.StudentNumber == student.StudentNumber).Average(g => g.Score));
+        var sortedAverage = students.OrderByDescending(o => o.Average).Take(3).ToList();
+        sortedAverage.ForEach(a => Console.WriteLine(a.ToString()));
+    }
 }
