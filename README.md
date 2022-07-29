@@ -2,7 +2,7 @@
 ## Phase 1 & 2
 ## Phase 3
 ## Phase 4
-## Contributers:
+## Contributers
 Donya Navabi
 Marzie Afshar
 
