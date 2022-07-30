@@ -1,3 +1,4 @@
+namespace Phase03;
 public class StudentData
 {
     public int StudentNumber { get; set; }
@@ -6,5 +7,5 @@ public class StudentData
     public double Average { get; set; }
 
     public override string ToString()
-    { return $"FistName= {FirstName}, LastName= {LastName}, ScoresAverage= {Average}"; }
+    { return $"FirstName= {FirstName}, LastName= {LastName}, ScoresAverage= {Average}"; }
 }

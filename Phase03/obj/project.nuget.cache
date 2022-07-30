@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "Z5ATjQitqrpvFeUMydscY0M8MuPnEvf0JakU9aV1SLRMZ8D0hIqHeI+Pb5Zi2V4NhGjUZTUAZh5IYY5Eiph7zw==",
+  "success": true,
+  "projectFilePath": "D:\\Marzi\\Summer1401-SE-Team03\\Phase03\\Phase03.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\amirr\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\amirr\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "C:\\Users\\amirr\\.nuget\\packages\\system.text.encodings.web\\6.0.0\\system.text.encodings.web.6.0.0.nupkg.sha512",
+    "C:\\Users\\amirr\\.nuget\\packages\\system.text.json\\6.0.5\\system.text.json.6.0.5.nupkg.sha512"
+  ],
+  "logs": []
+}
