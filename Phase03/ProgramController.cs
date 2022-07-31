@@ -1,4 +1,5 @@
-using Newtonsoft.Json;
+using static Phase03.Configs;
+
 namespace Phase03;
 public class ProgramController
 {
@@ -15,8 +16,8 @@ public class ProgramController
     private void LoadData()
     {
         JsonLoader jsonLoader = new JsonLoader();
-        _students = jsonLoader.Load<List<Student>>("Resources/students.json");
-        _grades = jsonLoader.Load<List<Grade>>("Resources/grades.json");
+        _students = jsonLoader.Load<List<Student>>(PathToStudentsJson);
+        _grades = jsonLoader.Load<List<Grade>>(PathToGradesJson);
     }
 
     private void SetAverageScores()
