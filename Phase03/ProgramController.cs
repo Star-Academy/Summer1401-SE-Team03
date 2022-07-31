@@ -2,38 +2,35 @@ using Newtonsoft.Json;
 namespace Phase03;
 public class ProgramController
 {
-    private static List<StudentData> students;
-    private static List<StudentGrade> grades;
+    private static List<Student> _students;
+    private static List<Grade> _grades;
+
     public void Run()
     {
-        InitializeLists();
-        FindAverageScores();
+        LoadData();
+        SetAverageScores();
         PrintResult(GetSortedAverages());
     }
     
-    private static void InitializeLists()
+    private void LoadData()
     {
-        students = GetDataFromJson<StudentData>("Resources/students.json");
-        grades = GetDataFromJson<StudentGrade>("Resources/grades.json");
+        JsonLoader jsonLoader = new JsonLoader();
+        _students = jsonLoader.Load<List<Student>>("Resources/students.json");
+        _grades = jsonLoader.Load<List<Grade>>("Resources/grades.json");
     }
-    private static List<T> GetDataFromJson<T>(string filePath)
+
+    private void SetAverageScores()
     {
-        using (StreamReader fileReader = new StreamReader(filePath))
-        {
-            var json = fileReader.ReadToEnd();
-            return JsonConvert.DeserializeObject<List<T>>(json);
-        }
-    }
-    private static void FindAverageScores()
-    {
-        students.ForEach(student => student.Average = grades.Where(
+        _students.ForEach(student => student.Average = _grades.Where(
             o => o.StudentNumber == student.StudentNumber).Average(g => g.Score));
     }
-    private static List<StudentData> GetSortedAverages()
+
+    private List<Student> GetSortedAverages()
     {
-        return students.OrderByDescending(o => o.Average).Take(3).ToList();
+        return _students.OrderByDescending(o => o.Average).Take(3).ToList();
     }
-    private static void PrintResult(List<StudentData> sortedStudents)
+
+    private void PrintResult(List<Student> sortedStudents)
     {
         sortedStudents.ForEach(a => Console.WriteLine(a.ToString()));
     }
