@@ -7,5 +7,7 @@ public class Student
     public double Average { get; set; }
 
     public override string ToString()
-    { return $"FirstName: {FirstName}, LastName: {LastName}, ScoresAverage: {Average}"; }
+    {
+        return $"FirstName: {FirstName}, LastName: {LastName}, ScoresAverage: {Average}";
+    }
 }
