@@ -11,4 +11,13 @@
     <ProjectReference Include="..\SimpleCalculator.Business\SimpleCalculator.Business.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="obj\Debug\net6.0\SimpleCalculator.Console.assets.cache" />
+    <Content Include="obj\project.assets.json" />
+    <Content Include="obj\project.nuget.cache" />
+    <Content Include="obj\project.packagespec.json" />
+    <Content Include="obj\rider.project.restore.info" />
+    <Content Include="obj\SimpleCalculator.Console.csproj.nuget.dgspec.json" />
+  </ItemGroup>
+
 </Project>
