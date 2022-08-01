@@ -23,16 +23,16 @@ public class ProgramController
     private void SetAverageScores()
     {
         _students.ForEach(student => student.Average = _grades.Where(
-            o => o.StudentNumber == student.StudentNumber).Average(g => g.Score));
+            grade => grade.StudentNumber == student.StudentNumber).Average(grade => grade.Score));
     }
 
     private List<Student> GetSortedAverages()
     {
-        return _students.OrderByDescending(o => o.Average).Take(3).ToList();
+        return _students.OrderByDescending(student => student.Average).Take(3).ToList();
     }
 
     private void PrintResult(List<Student> sortedStudents)
     {
-        sortedStudents.ForEach(a => Console.WriteLine(a.ToString()));
+        sortedStudents.ForEach(student => Console.WriteLine(student.ToString()));
     }
 }
