@@ -1,11 +1,26 @@
 using SimpleCalculator.Business;
+using SimpleCalculator.Business.Abstraction;
 using SimpleCalculator.Business.Enums;
+using SimpleCalculator.Business.OperatorBusiness;
 
 namespace SimpleCalculator.Tests;
 
 public class CalculatorUnitTest
 {
     private Calculator _calculator = new Calculator();
+
+    [Fact]
+    public void Calculator_Create_Test()
+    {
+        _calculator = new Calculator();
+    }
+
+    [Fact]
+    public void Calculator_Create_With_Param_Test()
+    {
+        OperatorProvider @operatorProvider = new OperatorProvider();
+        Calculator calculator = new Calculator(@operatorProvider);
+    }
 
     [Theory]
     [InlineData(0, 2, 2)]
