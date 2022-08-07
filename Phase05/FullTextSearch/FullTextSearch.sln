@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FullTextSearch", "FullTextSearch\FullTextSearch.csproj", "{7F2B784F-17DF-4273-B1AF-AC3C46CF77F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FullTextSearch.Test", "FullTextSearch.Test\FullTextSearch.Test.csproj", "{107D2EA5-DF58-4ADB-9233-43B1065CD8E1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F2B784F-17DF-4273-B1AF-AC3C46CF77F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F2B784F-17DF-4273-B1AF-AC3C46CF77F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F2B784F-17DF-4273-B1AF-AC3C46CF77F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F2B784F-17DF-4273-B1AF-AC3C46CF77F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{107D2EA5-DF58-4ADB-9233-43B1065CD8E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{107D2EA5-DF58-4ADB-9233-43B1065CD8E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{107D2EA5-DF58-4ADB-9233-43B1065CD8E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{107D2EA5-DF58-4ADB-9233-43B1065CD8E1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
