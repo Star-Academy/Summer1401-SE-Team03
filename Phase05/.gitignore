@@ -3,3 +3,5 @@
 /FullTextSearch/obj/
 /FullTextSearch.Test/bin/
 /FullTextSearch.Test/obj/
+/Resources/
+/EnglishStopWords.txt
