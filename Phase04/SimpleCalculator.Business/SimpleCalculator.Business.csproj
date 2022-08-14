@@ -4,6 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>StarAcademy.CodeStar1401.Team03.SimpleCalculator</PackageId>
+    <Authors>MarzieAfshar DonyaNavabi</Authors>
+    <Company>Star Academy</Company>
   </PropertyGroup>
-
 </Project>
