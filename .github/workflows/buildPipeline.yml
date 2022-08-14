@@ -17,13 +17,13 @@ jobs:
           dotnet-version: 6.0.x
       - name: Install dependencies
         run: dotnet restore
-        working-directory: "../../"
+        working-directory: "Phase04/SimpleCalculator.sln"
       - name: Build
         run: dotnet build --configuration Release --no-restore
-        working-directory: "../../"
+        working-directory: "Phase04/SimpleCalculator.sln"
       - name: Test
         run: dotnet test --no-restore --verbosity normal --collect:"XPlat Code Coverage"
-        working-directory: "../../"
+        working-directory: "Phase04/SimpleCalculator.sln"
     
 
   
